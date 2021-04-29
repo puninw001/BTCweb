@@ -43,8 +43,8 @@ body{
 }
 .body02{
 	padding-top: 7vw;
-	background-color: grey;
 	padding-bottom: 7vw;
+	border: 1px solid black;
 }
 .htu{
 	margin-left: 1vw;
@@ -75,6 +75,17 @@ body{
 }
 .fmenu a, .fmenu p{
 	color: white;
+}
+.icon{
+	width: 40px;
+	height: auto;
+	margin-right: 20px;
+}
+/*About*/
+.about{
+	height: 500px;
+	padding-top: 8.5vw;
+	margin-bottom: 5vw;
 }
 /*////////////////////Menu////////////////////*/
 .sidebar {

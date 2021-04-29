@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">
+	<link rel="shortcut icon" href="img/.png" />
+</head>
+<body>
+	<div class="header">
+		<div class="container">
+			<div class="row">
+				<div class="col-8 menu01">
+					<img src="img/logo.png" class="logo">
+					<a href="">Sell coin</a>
+					<a href="">Buy coin</a>
+					<a href="">History</a>
+					<a href="">About us</a>
+				</div>
+				<div class="col-4 menu02">
+					<a href="">Register</a>
+					<div class="vl"></div>
+					<a href="">Log in</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="openbtn" onclick="openNav()" id="openNav">☰</div>
+
+	<div class="sidebar" id="mySidebar">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+		<a href="" id="m1">Home</a>
+		<a href="" id="m2">Sell coin</a>
+		<a href="" id="m3">Buy coin</a>
+		<a href="" id="m4">History</a>
+		<a href="" id="m5">About us</a>
+	</div>
+
+	<div class="about">
+		<div class="container">
+			<h1 style="text-align: center;">About Us</h1>
+			<div class="row">
+				<div class="col-4">
+					<div class="card mid">
+						<div class="card-body">
+							<h4 class="card-title" style="text-align: center;">ที่อยู่ของเรา</h4>
+							<img src="img/address.png" class="logo mid">
+							<p class="card-text">325/2  หมู่ 5 ถ.เมรี  ซ.เมรี 12 ต. บ้านสวน อ. เมือง  จ. ชลบุรี 20000 </p>
+						</div>
+					</div>
+				</div>
+				<div class="col-4">
+					<div class="card mid">
+						<div class="card-body">
+							<h4 class="card-title" style="text-align: center;">ติดต่อเรา</h4>
+							<p class="card-text"><img src="img/call.png" class="icon">: +66 81 - 403 - 3311</p>
+							<p class="card-text"><img src="img/email.png" class="icon">: runchapon@gmail.com</p>
+							<p class="card-text"><img src="img/fb.png" class="icon">: พี่' จอบ</p>
+							<p class="card-text"><img src="img/line.png" class="icon">: nonnonnn2</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-4">
+					<div class="card mid">
+						<div class="card-body">
+							<h4 class="card-title" style="text-align: center;">ช่องทางอื่นๆ</h4>
+							<h5 style="text-align: center;">ผู้จัดการ</h5>
+							<p class="card-text"><img src="img/call.png" class="icon">: +66 81 - 407 - 6876</p>
+							<h5 style="text-align: center;">ฝ่าย HR</h5>
+							<p class="card-text"><img src="img/call.png" class="icon">: +66 99 - 259 - 5629</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-3">
+					<img src="img/logo.png" class="logo">
+				</div>
+				<div class="col-6 fmenu">
+						<a href="">Sell coin</a>
+						<a href="" style="margin-left: 9vw;margin-right: 9vw">Buy coin</a>
+						<a href="">About us</a>
+				</div>
+				<div class="col-3 fmenu" style="padding-left: 6vw">
+					<p>ที่อยู่ของเรา</p>
+					<p>325/2  หมู่ 5 ถ.เมรี  ซ.เมรี 12 ต. บ้านสวน อ. เมือง  จ. ชลบุรี 20000 </p>
+				</div>
+			</div>
+			<p style="text-align: center;color: white;">@ Created By Shaaw Suan</p>
+		</div>
+	</div>
+
+	<script>
+		function openNav() {
+			if(window.innerWidth >= 576){
+		  		document.getElementById("mySidebar").style.width = "250px";
+		    }
+		    else{
+		    	document.getElementById("mySidebar").style.width = "100%";
+		    }
+		  	document.getElementById("openNav").style.opacity = "0";
+		}
+		function closeNav() {
+		  	document.getElementById("mySidebar").style.width = "0";
+		  	document.getElementById("openNav").style.opacity = "1";
+		}
+	</script>
+
+</body>
+</html>
