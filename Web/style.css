@@ -1,0 +1,165 @@
+html {
+ 	scroll-behavior: smooth;
+}
+body{
+	overflow-x: hidden;
+}
+.header{
+	width: 100%;
+	height: 100px;
+	background-color: #2089CF;
+	position: fixed;
+	padding-top: 0.5%;
+	z-index: 500;
+}
+.menu01 a{
+	margin-left: 3%;
+	color: white;
+	text-decoration: none;
+}
+.menu02{
+	padding-top: 2%;
+}
+.menu02 a{
+	color: white;
+	text-decoration: none;
+	float: right;
+	margin-right: 12.5%;
+}
+.logo{
+	height: 75px;
+	width: auto;
+}
+.vl{
+	border-left: 2px solid white;
+  	height: 50px;
+  	position: absolute;
+ 	right: 36%;
+  	top: 10%;
+}
+.body01{
+	padding-top: 8.5vw;
+	padding-bottom: 5vw;
+}
+.body02{
+	padding-top: 7vw;
+	background-color: grey;
+	padding-bottom: 7vw;
+}
+.htu{
+	margin-left: 1vw;
+}
+.htu img{
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+	width: auto;
+	height: 10vw;
+}
+.htu p{
+	text-align: center;
+}
+.mid{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.footer{
+	padding-top: 1vw;
+	padding-bottom: 0.5vw;
+	background-color: #2089CF;
+	width: 100%;
+}
+.fmenu{
+	padding-top: 1vw;
+}
+.fmenu a, .fmenu p{
+	color: white;
+}
+/*////////////////////Menu////////////////////*/
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  transition: 0.5s;
+  max-width: 576px;
+  padding-top: 60px;
+}
+
+.sidebar a{
+  padding: 8px 8px 8px 32px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 25px;
+  color: #111;
+  display: block;
+  margin-top: 10%;
+  transition: 0.5s;
+}
+
+.sidebar a:hover{
+  color: #48d501;
+}
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  display: none;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #fff;
+  color: black;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 75%;
+  position: fixed;
+  left: 3%;
+  top: 3%;
+  transition: 0.5s;
+  z-index: 100;
+}
+
+.openbtn:hover {
+  background-color: #8AF757;
+  filter: drop-shadow(0 0 7px rgb(255, 255, 255, 1));
+  fill: #8AF757;
+}
+/**/
+@media all and (max-width: 1200px){
+	.vl{
+		right: 38%;
+	}
+	.header{
+		height: 90px;
+	}
+	.body01{
+		padding-top: 10vw;
+}
+}
+@media all and (max-width: 992px){
+	.header{
+		display: none;
+	}
+	.openbtn{
+		display: block;
+	}
+}
+@media all and (max-width: 576px){
+	.htu img{
+		display: block;
+		margin-right: auto;
+		margin-left: auto;
+		width: auto;
+		height: 25vw;
+	}
+}
