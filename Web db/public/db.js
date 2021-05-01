@@ -64,14 +64,20 @@ function initUser(){
 			document.getElementById("sign").textContent = "Sign Out";
 			document.getElementById("nosign").style.display = "none";
 			document.getElementById("insign").style.display = "block";
-			document.getElementById("headeruser").innerHTML = user.email;
+			let x = document.querySelectorAll("#headeruser");
+			for (var i in x) {
+				x[i].innerHTML = user.email;
+			}
 			document.getElementById("hidsign").innerHTML = '<a onclick="sign()">Log out</a>';
 		}
 		else{
 			document.getElementById("sign").textContent = "Sign in";
 			document.getElementById("nosign").style.display = "block";
 			document.getElementById("insign").style.display = "none";
-			document.getElementById("headeruser").innerHTML = "";
+			let x = document.querySelectorAll("#headeruser");
+			for (var i in x) {
+				x[i].innerHTML = "";
+			}
 			document.getElementById("hidsign").innerHTML = '<a href="register.html">Register</a><a href="login.html">Log in</a>';
 		}
 	})
