@@ -49,6 +49,10 @@ body{
 	height: 75px;
 	width: auto;
 }
+.logo1{
+	height: auto;
+	width: 30px;
+}
 .vl{
 	border-left: 2px solid white;
   	height: 50px;

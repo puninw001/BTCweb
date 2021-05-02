@@ -55,12 +55,17 @@ function register(){
 
 window.onload = function(){
 	initUser();
+	update();
+	firebase.auth().onAuthStateChanged(function (user){
+		if (user) {
+			readProfile(user.uid);
+		}
+	})
 }
 function initUser(){
 	firebase.auth().onAuthStateChanged(function (user) {
 		//User Log in
 		if (user) {
-			console.log(user.uid);
 			console.log(window.location.href);
 			document.getElementById("sign").textContent = "Sign Out";
 			document.getElementById("nosign").style.display = "none";
@@ -174,8 +179,9 @@ function update(){
 		for (let i in key) {
 			console.log(key[i]);
 			chk = key[i];
+			console.log(data[chk].noor);
 			if (data[chk].type == "buy"){
-				buyc += `<div class="row" style="border: 1px black solid;">
+				buyc += `<div class="row" style="border: 1px black solid;cursor: pointer;" onclick='ttt(1, ${data[chk].amount},3,4)'>
 							<div class="col-2">
 								<p>${data[chk].price}</p>
 							</div>
@@ -191,7 +197,7 @@ function update(){
 						</div>`;
 			}
 			else{
-				sellc += `<div class="row" style="border: 1px black solid;">
+				sellc += `<div class="row" style="border: 1px black solid;cursor: pointer;" onclick='ttt(${data[chk].price}, 2,3,4)'>
 							<div class="col-2">
 								<p>${data[chk].price}</p>
 							</div>
@@ -210,4 +216,68 @@ function update(){
 		document.getElementById("buyc").innerHTML = buyc;
 		document.getElementById("sellc").innerHTML = sellc;
 	});
+}
+function editpro(){
+	var phone = document.getElementById("phone").value;
+	var fb = document.getElementById("fb").value;
+	var line = document.getElementById("line").value;
+	var proimg = document.getElementById("proimg").value;
+	var address = document.getElementById("address").value;
+	firebase.auth().onAuthStateChanged(function (user){
+    	if(user){
+			const firebaseRef = firebase.database().ref("userinfo");
+		    firebaseRef.push({
+		    	phone: phone,
+		        fb: fb,
+		        line: line,
+		        proimg: proimg,
+		        address: address,
+		        uid: user.uid,
+		        email: user.email,
+		    });
+		    alert("Edit Profile Complete!");
+		    // window.location.href = "index.html";
+		}
+		else{
+			alert("Please Sign in");
+			window.location.href = "login.html";
+		}
+    });
+}
+function readProfile(idd){
+	var ref = firebase.database().ref("userinfo");
+	ref.on('value', (snapshot) =>{
+		const data = snapshot.val();
+		let key = Object.keys(data);
+		let chk;
+		let add = "";
+		let con = "";
+		for(let i in key){
+			chk = key[i];
+			if(data[chk].uid == idd){
+				add += `<div class="mid">
+							<img src="img/address.png" class="logo1">
+							<p>${data[chk].address}</p>
+						</div>`;
+				con += `<div class="mid">
+							<img src="img/call.png" class="logo1">
+							<p>${data[chk].phone}</p>
+						</div><div class="mid">
+							<img src="img/fb.png" class="logo1">
+							<p>${data[chk].fb}</p>
+						</div><div class="mid">
+							<img src="img/line.png" class="logo1">
+							<p>${data[chk].line}</p>
+						</div><div class="mid">
+							<img src="img/email.png" class="logo1">
+							<p>${data[chk].email}</p>
+						</div>`;
+			}
+		}
+		document.getElementById("add").innerHTML = add;
+		document.getElementById("con").innerHTML = con;
+	});
+}
+function ttt(price, amount, bank, uid){
+	console.log(price);
 }
