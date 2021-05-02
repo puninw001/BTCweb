@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>MaiMai P2P</title>
+	<title></title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 	<link rel="stylesheet" href="style.css">
 	<link rel="shortcut icon" href="img/logo.png" />
@@ -46,75 +46,42 @@
 	<div id="sign" style="display: none;"></div>
 
 	<div class="body01">
-		<div class="container">
-			<button onclick="update()">Test</button>
-			<div class="row">
-				<div class="col-12 col-lg-6" style="padding-right: 30px;">
-					<h2>Buy coin <a href="" style="font-size: 16px;">show more...</a></h2>
-					<div class="row" style="border: 2px black solid;">
-						<div class="col-2">
-							<p>Price(฿)</p>
-						</div>
-						<div class="col-3">
-							<p>Amount</p>
-						</div>
-						<div class="col-2">
-							<p>Bank</p>
-						</div>
-						<div class="col-5">
-							<p>Trader</p>
-						</div>
-					</div>
-					<div id="buyc"></div>
+		<div class="container" style="border: 1px black solid;padding: 0;">
+			<div style="background-color: #2089CF;padding: 10px 0px;">
+				<h2 style="text-align: center;color: white;">Create Order</h2>
+			</div>
+			<div class="row" style="padding: 0px 5vw;padding-top: 40px;">
+				<div class="col-12 col-lg-3">
+					<p>Order type:  <select id="type" style="width: 200px;">
+						<option value="buy">Buy</option>
+					  	<option value="sell">Sell</option>
+					</select></p>
 				</div>
-				<div class="col-12 col-lg-6" style="padding-right: 30px;">
-					<h2>Sell coin <a href="" style="font-size: 16px;">show more...</a></h2>
-					<div class="row" style="border: 2px black solid;">
-						<div class="col-2">
-							<p>Price(฿)</p>
-						</div>
-						<div class="col-3">
-							<p>Amount</p>
-						</div>
-						<div class="col-2">
-							<p>Bank</p>
-						</div>
-						<div class="col-5">
-							<p>Trader</p>
-						</div>
-					</div>
-					<div id="sellc"></div>
+				<div class="col-12 col-lg-3">
+					<p>Price: <input type="number" id="price" placeholder="Enter the Price(Bath ฿)" style="width: 200px;"></p>
+				</div>
+				<div class="col-12 col-lg-3">
+					<p>Amount: <input type="text" id="amount" placeholder="฿ for Sell, Cryto for Buy" style="width: 200px;"></p>
+				</div>
+				<div class="col-12 col-lg-3">
+					<p>Bank: <input type="text" id="bank" placeholder="Enter the Bank" style="width: 200px;"></p>
+				</div>
+			</div>
+			<div class="row" style="padding: 40px 5vw;">
+				<div class="col-12">
+					<p>Topic Text:</p>
+					<textarea id="topic" rows="4" style="width: 50vw;"></textarea>
+				</div>
+				<div class="col-12">
+					<p>Detail Text:</p>
+					<textarea id="detail" rows="4" style="width: 50vw;"></textarea>
 				</div>
 			</div>
 		</div>
-	</div>
-
-	<div class="body02">
 		<div class="container">
-			<h2 style="margin-bottom: 5vw">How to Use?</h2>
-			<div class="row">
-				<div class="col-12 col-sm-2 htu">
-					<img src="img/htu01.png">
-					<p>1. Log in with your account.</p>
-				</div>
-				<div class="col-12 col-sm-2 htu">
-					<img src="img/htu02.png">
-					<p>2. Choose an order.</p>
-				</div>
-				<div class="col-12 col-sm-2 htu">
-					<img src="img/htu03.png">
-					<p>3. Accept the order.</p>
-				</div>
-				<div class="col-12 col-sm-2 htu">
-					<img src="img/htu04.png">
-					<p>4. Online payment.</p>
-				</div>
-				<div class="col-12 col-sm-2 htu">
-					<img src="img/htu05.png">
-					<p>5. Success.</p>
-				</div>
-			</div>
+			<button onclick="creOrder()" class="btn btn-primary" style="margin-top: 30px;width: 100px;height: 50px;">Create</button>
 		</div>
+		
 	</div>
 
 	<div class="footer">
@@ -137,7 +104,6 @@
 		</div>
 	</div>
 </body>
-
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-auth.js"></script>
