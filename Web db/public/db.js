@@ -56,6 +56,7 @@ function register(){
 window.onload = function(){
 	initUser();
 	countorder();
+	readHistory();
 	update();
 	firebase.auth().onAuthStateChanged(function (user){
 		if (user) {
@@ -258,7 +259,7 @@ function editpro(){
 		        email: user.email,
 		    });
 		    alert("Edit Profile Complete!");
-		    // window.location.href = "index.html";
+		    window.location.href = "index.html";
 		}
 		else{
 			alert("Please Sign in");
@@ -459,19 +460,26 @@ function readHistory(){
     		}
     		document.getElementById("hisor").innerHTML = his;
     	}
+    	else{
+    		document.getElementById("hisor").innerHTML = `<h1 style="text-align:center;">Please Sign in</h1>`;
+    	}
     });
 }
 function chkHash(num){
 	let chk;
-	let chkDate;
 	let his = "";
 	firebase.auth().onAuthStateChanged(function (user){
     	if(user){
-    		console.log(num);
     		for(let i in keyOrder){
     			chk = keyOrder[i];
-    			if((num == dataOrder[chk].noor) && (user.email == dataOrder[chk].email) && (dataOrder[chk].doneDate != "")){
-    				console.log("U are Own");
+    			if((num == dataOrder[chk].noor) && (user.email == dataOrder[chk].email) && (dataOrder[chk].doneDate != "") && (dataOrder[chk].status == "incomplete")){
+    				his += `<button onclick="recHash(${num})" class="btn btn-success" style="margin-right: 50px">ยืนยัน</button>
+							<button onclick="hidehis()" class="btn btn-danger">ยกเลิก</button>`;
+					document.getElementById("rech").innerHTML = his;
+    				document.getElementById("hidhisor").style.opacity = "1";
+					document.getElementById("hidhisor").style.zIndex = "100";
+					document.getElementById("hidbackhi").style.opacity = "0.7";
+					document.getElementById("hidbackhi").style.zIndex = "99";
     			}
     			else{
     				console.log("Nope man");
@@ -479,4 +487,28 @@ function chkHash(num){
     		}
     	}
     });
+}
+function hidehis(){
+	document.getElementById("hidhisor").style.opacity = "0";
+	document.getElementById("hidhisor").style.zIndex = "-10";
+	document.getElementById("hidbackhi").style.opacity = "0";
+	document.getElementById("hidbackhi").style.zIndex = "-11";
+}
+function recHash(num){
+	let chk;
+	let hash = document.getElementById("hash").value;
+	firebase.auth().onAuthStateChanged(function (user){
+    	if(user){
+    		for(let i in keyOrder){
+    			chk = keyOrder[i];
+    			if(dataOrder[chk].noor == num){
+		    		const firebaseRef = firebase.database().ref("test");
+				    firebaseRef.child(`${chk}/hash`).set(hash);
+				    firebaseRef.child(`${chk}/status`).set("Complete!");
+				    alert("Hash Recorded!");
+				    hidehis();
+				}
+			}
+		}
+	});
 }

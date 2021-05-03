@@ -109,13 +109,25 @@ body{
 	position: fixed;
 	transition: 0.5s;
 	width: 40vw;
-	height: 15%;
+	height: 30%;
 	left: 35%;
 	top: 20%;
 	background-color: white;
 	padding-top: 20px;
-	z-index: 101;
+	z-index: -10;
+	opacity: 0;
 	text-align: center;
+}
+#hidbackhi{
+	position: fixed;
+	transition: 0.5s;
+	cursor: pointer;
+	top: 0;
+	width: 100vw;
+	height: 100%;
+	background-color: black;
+	opacity: 0;
+	z-index: -11;
 }
 .htu{
 	margin-left: 1vw;
