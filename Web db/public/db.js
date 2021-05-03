@@ -48,13 +48,14 @@ function register(){
   			document.getElementById("email").value = "";
 	  		document.getElementById("password").value = "";
 	  	  	alert("Register Complete");
-	  	  	// window.location.href = "index.html";
+	  	  	window.location.href = "index.html";
 	  	}
   	});
 }
 
 window.onload = function(){
 	initUser();
+	countorder();
 	update();
 	firebase.auth().onAuthStateChanged(function (user){
 		if (user) {
@@ -111,7 +112,7 @@ function sign(){
 		    }
 	  	}).then(function(check){
 	  		if(check){
-	  			// window.location.href = "index.html";
+	  			window.location.href = "index.html";
 	  		}
 	  	})
 	}
@@ -132,6 +133,22 @@ function resetpass(){
 	});
 }
 /**/
+let count = 0;
+let dataOrder;
+let keyOrder;
+function countorder(){
+	var ref = firebase.database().ref("test");
+	ref.on('value', (snapshot) =>{
+		const data = snapshot.val();
+		let key = Object.keys(data);
+		dataOrder = data;
+		keyOrder = key;
+		for (let i in key){
+			count += 1;
+		}
+		count += 1;
+	});
+}
 function creOrder(){
 	var type = document.getElementById("type").value;
     var price = document.getElementById("price").value;
@@ -155,6 +172,12 @@ function creOrder(){
 		        detail: detail,
 		        uid: user.uid,
 		        email: user.email,
+		        noor: count,
+		        isHave: true,
+		        buyBy: "",
+		        doneDate: "",
+		        hash: "",
+		        status: "incomplete",
 		    });
 		    alert("Create Order Complete!");
 		    window.location.href = "index.html";
@@ -170,18 +193,17 @@ function update(){
 	var ref = firebase.database().ref("test");
 	ref.on('value', (snapshot) =>{
 		const data = snapshot.val();
-		console.log(data);
 		let key = Object.keys(data);
 		let chk;
 		let buyc = "";
 		let sellc = "";
-		console.log(key);
+		console.log(count);
 		for (let i in key) {
 			console.log(key[i]);
 			chk = key[i];
 			console.log(data[chk].noor);
-			if (data[chk].type == "buy"){
-				buyc += `<div class="row" style="border: 1px black solid;cursor: pointer;" onclick='ttt(1, ${data[chk].amount},3,4)'>
+			if (data[chk].type == "buy" && data[chk].isHave){
+				buyc += `<div class="row" style="border: 1px black solid;cursor: pointer;" onclick='ttt(${data[chk].noor})'>
 							<div class="col-2">
 								<p>${data[chk].price}</p>
 							</div>
@@ -196,8 +218,8 @@ function update(){
 							</div>
 						</div>`;
 			}
-			else{
-				sellc += `<div class="row" style="border: 1px black solid;cursor: pointer;" onclick='ttt(${data[chk].price}, 2,3,4)'>
+			else if(data[chk].type == "sell" && data[chk].isHave){
+				sellc += `<div class="row" style="border: 1px black solid;cursor: pointer;" onclick='ttt(${data[chk].noor})'>
 							<div class="col-2">
 								<p>${data[chk].price}</p>
 							</div>
@@ -278,6 +300,183 @@ function readProfile(idd){
 		document.getElementById("con").innerHTML = con;
 	});
 }
-function ttt(price, amount, bank, uid){
-	console.log(price);
+
+let mem = "";
+
+function ttt(num){
+	console.log(num);
+	var ref = firebase.database().ref("test");
+	ref.on('value', (snapshot) =>{
+		const data = snapshot.val();
+		let key = Object.keys(data);
+		let chk;
+		let inn = "";
+		for (let i in key){
+			chk = key[i];
+			if(data[chk].noor == num){
+				inn += `<div class="container">
+							<h1 style="text-align:center;">Order No.${data[chk].noor}</h1>
+							<h2 style="text-align:center;">Order: ${data[chk].type}</h2>
+							<div class="row">
+								<div class="col-12 col-lg-6">
+									<div class="row">
+										<div class="col-12 col-sm-4" style="border: 1px black solid;">
+											<p>Price: ${data[chk].price}</p>
+										</div>
+										<div class="col-12 col-sm-4" style="border: 1px black solid;">
+											<p>Amount: ${data[chk].amount}</p>
+										</div>
+										<div class="col-12 col-sm-4" style="border: 1px black solid;">
+											<p>Bank: ${data[chk].bank}</p>
+										</div>
+									</div>
+									<div class="row">
+										<h4 style="margin-top:25px;margin-bottom:10px;">Topic text:</h4>
+										<div class="col-12" style="border: 1px black solid;">
+											<p>${data[chk].topic}</p>
+										</div>
+										<h4 style="margin-top:25px;margin-bottom:10px;">Detail text:</h4>
+										<div class="col-12" style="border: 1px black solid;">
+											<p>${data[chk].detail}</p>
+										</div>
+									</div>
+								</div>
+								<div class="col-12 col-lg-6">`
+				hidmem(data[chk].uid);
+				inn +=	mem + `</div>
+							</div>
+						</div>
+						<button class="btn btn-primary mid" onclick="showSure(${data[chk].noor})" style="margin-top:30px;margin-bottom:30px;">DEAL!</button>`;
+			}
+		}
+		document.getElementById("hidorder").innerHTML = inn;
+		document.getElementById("hidorder").style.opacity = "1";
+		document.getElementById("hidorder").style.zIndex = "100";
+		document.getElementById("hidback").style.opacity = "0.7";
+		document.getElementById("hidback").style.zIndex = "99";
+	});
+}
+function hidmem(num){
+	var ref = firebase.database().ref("userinfo");
+	ref.on('value', (snapshot) =>{
+		const data = snapshot.val();
+		let key = Object.keys(data);
+		let chk;
+		for (let i in key){
+			chk = key[i];
+			if(data[chk].uid == num){
+				mem = `<h2 style="text-align:center;">${data[chk].email}</h2>
+				<p><img src="img/call.png" class="logo1">&nbsp;: ${data[chk].phone}</p>
+				<p><img src="img/fb.png" class="logo1">&nbsp;: ${data[chk].fb}</p>
+				<p><img src="img/line.png" class="logo1">&nbsp;: ${data[chk].line}</p>
+				<p><img src="img/uid.png" class="logo1">&nbsp;: ${data[chk].uid}</p>
+				`;
+			}
+		}
+	});
+}
+function clorder(){
+	document.getElementById("hidorder").style.opacity = "0";
+	document.getElementById("hidorder").style.zIndex = "-10";
+	document.getElementById("hidback").style.opacity = "0";
+	document.getElementById("hidback").style.zIndex = "-11";
+	document.getElementById("hidsure").style.display = "none";
+}
+function showSure(num){
+	document.getElementById("hidsure").style.display = "block";
+	document.getElementById("hidsure").innerHTML = `<h4 style="margin-bottom: 20px">ต้องการยืนยันออเดอร์หรือไม่?</h4>
+		<button onclick="accOrder(${num})" class="btn btn-success" style="margin-right: 50px">ยืนยัน</button>
+		<button onclick="hidSure()" class="btn btn-danger">ยกเลิก</button>`;
+}
+function hidSure(){
+	document.getElementById("hidorder").style.opacity = "0";
+	document.getElementById("hidorder").style.zIndex = "-10";
+	document.getElementById("hidback").style.opacity = "0";
+	document.getElementById("hidback").style.zIndex = "-11";
+	document.getElementById("hidsure").style.display = "none";
+}
+function accOrder(num){
+	console.log(num);
+	console.log(dataOrder);
+	console.log(keyOrder);
+	let chk;
+	let current = new Date();
+  	let date = current.toLocaleString();
+	firebase.auth().onAuthStateChanged(function (user){
+    	if(user){
+    		for(let i in keyOrder){
+    			chk = keyOrder[i];
+    			if(dataOrder[chk].noor == num){
+		    		const firebaseRef = firebase.database().ref("test");
+				    firebaseRef.child(`${chk}/isHave`).set(false);
+				    firebaseRef.child(`${chk}/buyBy`).set(user.email);
+				    firebaseRef.child(`${chk}/doneDate`).set(date);
+				}
+			}
+			alert("Order Complete!");
+			hidSure();
+    	}
+    	else{
+    		alert("Please Sign in!");
+    		window.location.href("login.html");
+    	}
+    });
+}
+function readHistory(){
+	let chk;
+	let chkDate;
+	let his = "";
+	firebase.auth().onAuthStateChanged(function (user){
+    	if(user){
+    		for(let i in keyOrder){
+    			chk = keyOrder[i];
+    			if(user.email == dataOrder[chk].buyBy || user.email == dataOrder[chk].email){
+    				if(dataOrder[chk].doneDate == "")
+    					chkDate = "Order isn't progressed";
+    				else
+    					chkDate = dataOrder[chk].doneDate;
+    				his += `<div class="row" style="text-align:center;cursor: pointer;" onclick='chkHash(${dataOrder[chk].noor})'>
+								<div class="col-1">
+									<p>${dataOrder[chk].price}</p>
+								</div>
+								<div class="col-1">
+									<p>${dataOrder[chk].amount}</p>
+								</div>
+								<div class="col-2">
+									<p>${dataOrder[chk].bank}</p>
+								</div>
+								<div class="col-3">
+									<p>${chkDate}</p>
+								</div>
+								<div class="col-2">
+									<p>${dataOrder[chk].status}</p>
+								</div>
+								<div class="col-3">
+									<p>${dataOrder[chk].email}</p>
+								</div>
+							</div><hr>`;
+    			}
+    		}
+    		document.getElementById("hisor").innerHTML = his;
+    	}
+    });
+}
+function chkHash(num){
+	let chk;
+	let chkDate;
+	let his = "";
+	firebase.auth().onAuthStateChanged(function (user){
+    	if(user){
+    		console.log(num);
+    		for(let i in keyOrder){
+    			chk = keyOrder[i];
+    			if((num == dataOrder[chk].noor) && (user.email == dataOrder[chk].email) && (dataOrder[chk].doneDate != "")){
+    				console.log("U are Own");
+    			}
+    			else{
+    				console.log("Nope man");
+    			}
+    		}
+    	}
+    });
 }

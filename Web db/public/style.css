@@ -10,7 +10,7 @@ body{
 	background-color: #2089CF;
 	position: fixed;
 	padding-top: 0.5%;
-	z-index: 500;
+	z-index: 50;
 }
 .menu01 a{
 	margin-left: 3%;
@@ -68,6 +68,54 @@ body{
 	padding-top: 7vw;
 	padding-bottom: 7vw;
 	border: 1px solid black;
+}
+#hidorder{
+	transition: 0.5s;
+	opacity: 0;
+	width: 80vw;
+	height: 80%;
+	background-color: white;
+	position: fixed;
+	left: 5%;
+	top: 5%;
+	padding: 10px;
+	z-index: -10;
+}
+#hidback{
+	position: fixed;
+	transition: 0.5s;
+	cursor: pointer;
+	top: 0;
+	width: 100vw;
+	height: 100%;
+	background-color: black;
+	opacity: 0;
+	z-index: -11;
+}
+#hidsure{
+	position: fixed;
+	transition: 0.5s;
+	width: 30vw;
+	height: 15%;
+	left: 35%;
+	top: 20%;
+	background-color: white;
+	padding-top: 20px;
+	z-index: 101;
+	text-align: center;
+	display: none;
+}
+#hidhisor{
+	position: fixed;
+	transition: 0.5s;
+	width: 40vw;
+	height: 15%;
+	left: 35%;
+	top: 20%;
+	background-color: white;
+	padding-top: 20px;
+	z-index: 101;
+	text-align: center;
 }
 .htu{
 	margin-left: 1vw;
@@ -192,6 +240,9 @@ body{
 	.openbtn{
 		display: block;
 	}
+	#hidsure{
+		width: 40vw;
+	}
 }
 @media all and (max-width: 576px){
 	.htu img{
@@ -200,5 +251,9 @@ body{
 		margin-left: auto;
 		width: auto;
 		height: 25vw;
+	}
+	#hidsure{
+		left: 20%;
+		width: 70vw;
 	}
 }

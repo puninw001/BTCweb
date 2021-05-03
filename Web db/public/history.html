@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>MaiMai P2P</title>
+	<title></title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 	<link rel="stylesheet" href="style.css">
 	<link rel="shortcut icon" href="img/logo.png" />
@@ -44,91 +44,42 @@
 		<a href="" id="m5">About us</a>
 	</div>
 	<div id="sign" style="display: none;"></div>
+	<div id="buyc" style="display: none;"></div>
+	<div id="sellc" style="display: none;"></div>
 	<div id="add" style="display: none;"></div>
 	<div id="con" style="display: none;"></div>
 
 	<div class="body01">
 		<div class="container">
-			<div class="row">
-				<div class="col-6">
-					<button onclick="update()" class="btn btn-primary">Update</button>
-				</div>
-				<div class="col-6">
-					<a href="creorder.html" style="float: right;"><button class="btn btn-secondary">Create an order</button></a>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12 col-lg-6" style="padding-right: 30px;">
-					<h2>Buy coin <a href="" style="font-size: 16px;">show more...</a></h2>
-					<div class="row" style="border: 2px black solid; text-align: center;">
-						<div class="col-2">
-							<b><p>Price(฿)</p></b>
-						</div>
-						<div class="col-3">
-							<b><p>Amount</p></b>
-						</div>
-						<div class="col-2">
-							<b><p>Bank</p></b>
-						</div>
-						<div class="col-5">
-							<b><p>Trader</p></b>
-						</div>
+			<button onclick="readHistory()" class="btn btn-primary">Update</button>
+			<h2 style="text-align: center;">History</h2>
+			<div style="padding: 10px 0px;">
+				<div class="row" style="text-align: center;color: white;background-color: #2089CF; margin-bottom: 20px;padding-top: 10px;">
+					<div class="col-1">
+						<p>Price</p>
 					</div>
-					<div id="buyc" style=" text-align: center;"></div>
-				</div>
-				<div class="col-12 col-lg-6" style="padding-right: 30px;">
-					<h2>Sell coin <a href="" style="font-size: 16px;">show more...</a></h2>
-					<div class="row" style="border: 2px black solid; text-align: center;">
-						<div class="col-2">
-							<b><p>Price(฿)</p></b>
-						</div>
-						<div class="col-3">
-							<b><p>Amount</p></b>
-						</div>
-						<div class="col-2">
-							<b><p>Bank</p></b>
-						</div>
-						<div class="col-5">
-							<b><p>Trader</p></b>
-						</div>
+					<div class="col-1">
+						<p>Amount</p>
 					</div>
-					<div id="sellc" style=" text-align: center;"></div>
+					<div class="col-2">
+						<p>Bank</p>
+					</div>
+					<div class="col-3">
+						<p>Deal's Date</p>
+					</div>
+					<div class="col-2">
+						<p>Status</p>
+					</div>
+					<div class="col-3">
+						<p>Trader</p>
+					</div>
 				</div>
+				<div id="hisor"></div>
 			</div>
 		</div>
 	</div>
 
-	<div id="hidorder"></div>
-	<div id="hidback" onclick="clorder()"></div>
-	<div id="hidsure"></div>
-
-	<div class="body02">
-		<div class="container">
-			<h2 style="margin-bottom: 5vw">How to Use?</h2>
-			<div class="row">
-				<div class="col-12 col-sm-2 htu">
-					<img src="img/htu01.png">
-					<p>1. Log in with your account.</p>
-				</div>
-				<div class="col-12 col-sm-2 htu">
-					<img src="img/htu02.png">
-					<p>2. Choose an order.</p>
-				</div>
-				<div class="col-12 col-sm-2 htu">
-					<img src="img/htu03.png">
-					<p>3. Accept the order.</p>
-				</div>
-				<div class="col-12 col-sm-2 htu">
-					<img src="img/htu04.png">
-					<p>4. Online payment.</p>
-				</div>
-				<div class="col-12 col-sm-2 htu">
-					<img src="img/htu05.png">
-					<p>5. Success.</p>
-				</div>
-			</div>
-		</div>
-	</div>
+	<div id="hidhisor"></div>
 
 	<div class="footer">
 		<div class="container">
@@ -150,7 +101,6 @@
 		</div>
 	</div>
 </body>
-
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-auth.js"></script>
