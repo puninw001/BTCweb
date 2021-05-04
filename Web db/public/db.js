@@ -56,6 +56,7 @@ function register(){
 window.onload = function(){
 	initUser();
 	countorder();
+	setUsa();
 	readHistory();
 	update();
 	firebase.auth().onAuthStateChanged(function (user){
@@ -137,6 +138,8 @@ function resetpass(){
 let count = 0;
 let dataOrder;
 let keyOrder;
+let dataUser;
+let keyUser;
 function countorder(){
 	var ref = firebase.database().ref("test");
 	ref.on('value', (snapshot) =>{
@@ -150,6 +153,15 @@ function countorder(){
 		count += 1;
 	});
 }
+function setUsa(){
+	var ref = firebase.database().ref("userinfo");
+	ref.on('value', (snapshot) =>{
+		const data = snapshot.val();
+		let key = Object.keys(data);
+		dataUser = data;
+		keyUser = key;
+	});
+}
 function creOrder(){
 	var type = document.getElementById("type").value;
     var price = document.getElementById("price").value;
@@ -161,27 +173,42 @@ function creOrder(){
     	alert("Price, Amount and Bank must be fill");
     	return;
     }
+    let chk;
+    let ised = 0;
     firebase.auth().onAuthStateChanged(function (user){
     	if(user){
-			const firebaseRef = firebase.database().ref("test");
-		    firebaseRef.push({
-		    	type: type,
-		        price: price,
-		        amount: amount,
-		        bank: bank,
-		        topic: topic,
-		        detail: detail,
-		        uid: user.uid,
-		        email: user.email,
-		        noor: count,
-		        isHave: true,
-		        buyBy: "",
-		        doneDate: "",
-		        hash: "",
-		        status: "incomplete",
-		    });
-		    alert("Create Order Complete!");
-		    window.location.href = "index.html";
+    		const firebaseRef = firebase.database().ref("test");
+    		for(i in keyUser){
+    			chk = keyUser[i];
+    			if(user.email == dataUser[chk].email){
+    				ised = 1;
+    				break;
+    			}
+			}
+			if(ised){
+			    firebaseRef.push({
+			    	type: type,
+			        price: price,
+			        amount: amount,
+			        bank: bank,
+			        topic: topic,
+			        detail: detail,
+			        uid: user.uid,
+			        email: user.email,
+			        noor: count,
+			        isHave: true,
+			        buyBy: "",
+			        doneDate: "",
+			        hash: "",
+			        status: "incomplete",
+			    });
+			    alert("Create Order Complete!");
+			    window.location.href = "index.html";
+			}
+			else{
+				alert("Please edit your profile.");
+			    window.location.href = "editpro.html";
+			}
 		}
 		else{
 			alert("Please Sign in");
@@ -246,20 +273,40 @@ function editpro(){
 	var line = document.getElementById("line").value;
 	var proimg = document.getElementById("proimg").value;
 	var address = document.getElementById("address").value;
+	let chk;
+	let newbie = 1;
 	firebase.auth().onAuthStateChanged(function (user){
     	if(user){
-			const firebaseRef = firebase.database().ref("userinfo");
-		    firebaseRef.push({
-		    	phone: phone,
-		        fb: fb,
-		        line: line,
-		        proimg: proimg,
-		        address: address,
-		        uid: user.uid,
-		        email: user.email,
-		    });
-		    alert("Edit Profile Complete!");
-		    window.location.href = "index.html";
+    		const firebaseRef = firebase.database().ref("userinfo");
+    		for(i in keyUser){
+    			chk = keyUser[i];
+    			if(user.email == dataUser[chk].email){
+    				newbie = 0;
+    				break;
+    			}
+			}
+			if(newbie){
+			    firebaseRef.push({
+			    	phone: phone,
+			        fb: fb,
+			        line: line,
+			        proimg: proimg,
+			        address: address,
+			        uid: user.uid,
+			        email: user.email,
+			    });
+			    alert("Edit Profile Complete!");
+			    window.location.href = "index.html";
+			}
+			else{
+				firebaseRef.child(`${chk}/phone`).set(phone);
+				firebaseRef.child(`${chk}/fb`).set(fb);
+				firebaseRef.child(`${chk}/line`).set(line);
+				firebaseRef.child(`${chk}/proimg`).set(proimg);
+				firebaseRef.child(`${chk}/address`).set(address);
+				alert("Edit Profile Complete!");
+			    window.location.href = "index.html";
+			}
 		}
 		else{
 			alert("Please Sign in");
@@ -315,9 +362,11 @@ function ttt(num){
 		for (let i in key){
 			chk = key[i];
 			if(data[chk].noor == num){
-				inn += `<div class="container">
+				inn += `<div style="text-align: center;color: white;background-color: #2089CF; margin-bottom: 20px;padding-top: 10px;">
 							<h1 style="text-align:center;">Order No.${data[chk].noor}</h1>
-							<h2 style="text-align:center;">Order: ${data[chk].type}</h2>
+							<h2 style="text-align:center; padding-bottom:20px;">Order: ${data[chk].type}</h2>
+						</div>
+						<div class="container">
 							<div class="row">
 								<div class="col-12 col-lg-6">
 									<div class="row">
@@ -371,6 +420,7 @@ function hidmem(num){
 				<p><img src="img/fb.png" class="logo1">&nbsp;: ${data[chk].fb}</p>
 				<p><img src="img/line.png" class="logo1">&nbsp;: ${data[chk].line}</p>
 				<p><img src="img/uid.png" class="logo1">&nbsp;: ${data[chk].uid}</p>
+				<p><img src="img/address.png" class="logo1">&nbsp;: ${data[chk].address}</p>
 				`;
 			}
 		}
@@ -426,6 +476,8 @@ function accOrder(num){
 function readHistory(){
 	let chk;
 	let chkDate;
+	let chkBy;
+	let chkHis = 1;
 	let his = "";
 	firebase.auth().onAuthStateChanged(function (user){
     	if(user){
@@ -433,9 +485,13 @@ function readHistory(){
     			chk = keyOrder[i];
     			if(user.email == dataOrder[chk].buyBy || user.email == dataOrder[chk].email){
     				if(dataOrder[chk].doneDate == "")
-    					chkDate = "Order isn't progressed";
+    					chkDate = "Order isn't progressed.";
     				else
     					chkDate = dataOrder[chk].doneDate;
+    				if(dataOrder[chk].buyBy == "")
+    					chkBy = "No one order.";
+    				else
+    					chkBy = dataOrder[chk].buyBy;
     				his += `<div class="row" style="text-align:center;cursor: pointer;" onclick='chkHash(${dataOrder[chk].noor})'>
 								<div class="col-1">
 									<p>${dataOrder[chk].price}</p>
@@ -443,8 +499,11 @@ function readHistory(){
 								<div class="col-1">
 									<p>${dataOrder[chk].amount}</p>
 								</div>
-								<div class="col-2">
+								<div class="col-1">
 									<p>${dataOrder[chk].bank}</p>
+								</div>
+								<div class="col-2">
+									<p>${chkBy}</p>
 								</div>
 								<div class="col-3">
 									<p>${chkDate}</p>
@@ -452,12 +511,14 @@ function readHistory(){
 								<div class="col-2">
 									<p>${dataOrder[chk].status}</p>
 								</div>
-								<div class="col-3">
+								<div class="col-2">
 									<p>${dataOrder[chk].email}</p>
 								</div>
 							</div><hr>`;
+						chkHis = 0;
     			}
     		}
+    		if (chkHis) {his = `<h1 style="text-align:center;">No order progress.</h1>`;}
     		document.getElementById("hisor").innerHTML = his;
     	}
     	else{
@@ -476,6 +537,19 @@ function chkHash(num){
     				his += `<button onclick="recHash(${num})" class="btn btn-success" style="margin-right: 50px">ยืนยัน</button>
 							<button onclick="hidehis()" class="btn btn-danger">ยกเลิก</button>`;
 					document.getElementById("rech").innerHTML = his;
+					document.getElementById("tiha").innerHTML = "กรุณากรอก Hash เพื่อยืนยันออเดอร์";
+					document.getElementById("hash").disabled = false;
+    				document.getElementById("hidhisor").style.opacity = "1";
+					document.getElementById("hidhisor").style.zIndex = "100";
+					document.getElementById("hidbackhi").style.opacity = "0.7";
+					document.getElementById("hidbackhi").style.zIndex = "99";
+    			}
+    			else if((num == dataOrder[chk].noor) && (dataOrder[chk].status == "Complete!") && (user.email == dataOrder[chk].buyBy)){
+    				his += `<h4>Hash is: ${dataOrder[chk].hash}</h4>
+    						<button onclick="hidehis()" class="btn btn-success">OK</button>`;
+    				document.getElementById("rech").innerHTML = his;
+    				document.getElementById("tiha").innerHTML = "เลข Hash ได้รับการยืนยันแล้ว";
+    				document.getElementById("hash").disabled = true;
     				document.getElementById("hidhisor").style.opacity = "1";
 					document.getElementById("hidhisor").style.zIndex = "100";
 					document.getElementById("hidbackhi").style.opacity = "0.7";
@@ -493,6 +567,8 @@ function hidehis(){
 	document.getElementById("hidhisor").style.zIndex = "-10";
 	document.getElementById("hidbackhi").style.opacity = "0";
 	document.getElementById("hidbackhi").style.zIndex = "-11";
+	document.getElementById("hash").disabled = false;
+	document.getElementById("tiha").innerHTML = "กรุณากรอก Hash เพื่อยืนยันออเดอร์";
 }
 function recHash(num){
 	let chk;
